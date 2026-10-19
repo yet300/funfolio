@@ -135,6 +135,32 @@ class AdaptiveGameScaffoldTest {
     }
 
     @Test
+    fun `expanded two pane keeps panes clear of the fold axis`() = runComposeUiTest {
+        setContent {
+            AdaptiveGameScaffold(
+                modifier = Modifier.size(width = 951.dp, height = 669.dp),
+                supportingPaneModifier = Modifier.testTag("supporting_pane"),
+                primary = {
+                    Box(Modifier.fillMaxSize().testTag("primary_content"))
+                },
+                supporting = {
+                    Box(Modifier.fillMaxWidth().height(1200.dp).testTag("supporting_content"))
+                },
+            )
+        }
+
+        val primary = onNodeWithTag("primary_content")
+            .fetchSemanticsNode().boundsInRoot
+        val supporting = onNodeWithTag("supporting_pane")
+            .fetchSemanticsNode().boundsInRoot
+        val foldAxisPx = with(density) { 475.5.dp.toPx() }
+        val supportingMaxPx = with(density) { 360.dp.toPx() }
+        assertTrue(primary.right <= foldAxisPx + 1f, "primary right ${primary.right} past fold axis")
+        assertTrue(supporting.left >= foldAxisPx - 1f, "supporting left ${supporting.left} past fold axis")
+        assertTrue(supporting.width <= supportingMaxPx + 1f)
+    }
+
+    @Test
     fun `primary remains playable across compact medium expanded and height boundaries`() = runComposeUiTest {
         val viewport = mutableStateOf(DpSize(width = 320.dp, height = 479.dp))
         setContent {

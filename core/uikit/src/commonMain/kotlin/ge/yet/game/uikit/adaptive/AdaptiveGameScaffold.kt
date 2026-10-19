@@ -179,7 +179,7 @@ fun AdaptiveGameScaffold(
                 supporting = movableSupporting,
             )
 
-            AdaptiveGameArrangement.CompactHeightTwoPane -> TwoPaneGameLayout(
+            AdaptiveGameArrangement.CompactHeightTwoPane -> CompactHeightTwoPaneGameLayout(
                 metrics = metrics,
                 horizontalSpacingDp = 16,
                 header = movableHeader,
@@ -268,15 +268,62 @@ private fun TwoPaneGameLayout(
                     .fillMaxSize(),
             )
         }
+        // Even 50/50 halves keep the pane gap on the fold axis of
+        // book-style foldables, where the hinge sits on the horizontal
+        // centre in every open pose, so neither pane overlaps it.
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight(),
+        ) {
+            Column(
+                modifier = Modifier
+                    .widthIn(max = metrics.supportingMaxDp.dp)
+                    .fillMaxHeight(),
+            ) {
+                header(Modifier.fillMaxWidth())
+                supporting(Modifier.weight(1f).fillMaxWidth())
+            }
+        }
+    }
+}
+
+@Composable
+private fun CompactHeightTwoPaneGameLayout(
+    metrics: AdaptiveGameMetrics,
+    horizontalSpacingDp: Int,
+    header: @Composable (Modifier) -> Unit,
+    primary: @Composable (Modifier) -> Unit,
+    supporting: @Composable (Modifier) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .widthIn(max = metrics.contentMaxDp.dp)
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(horizontalSpacingDp.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight(),
+            contentAlignment = Alignment.Center,
+        ) {
+            primary(
+                Modifier
+                    .sizeIn(
+                        maxWidth = metrics.primaryMaxDp.dp,
+                        maxHeight = metrics.primaryMaxDp.dp,
+                    )
+                    .aspectRatio(1f)
+                    .fillMaxSize(),
+            )
+        }
         Column(
-            modifier = (if (metrics.arrangement == AdaptiveGameArrangement.CompactHeightTwoPane) {
-                Modifier.width(metrics.supportingMinDp.dp)
-            } else {
-                Modifier.widthIn(
-                    min = metrics.supportingMinDp.dp,
-                    max = metrics.supportingMaxDp.dp,
-                )
-            }).fillMaxHeight(),
+            modifier = Modifier
+                .width(metrics.supportingMinDp.dp)
+                .fillMaxHeight(),
         ) {
             header(Modifier.fillMaxWidth())
             supporting(Modifier.weight(1f).fillMaxWidth())

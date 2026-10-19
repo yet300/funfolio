@@ -39,7 +39,7 @@ replace missing reference evidence with invented mechanics or level counts.
 ```text
 BlockBlast/
 ├── androidApp/                 Android application, manifest, Firebase and ads
-├── iosApp/                     SwiftUI host, iOS ATT and native SDK packaging
+├── iosApp/                     SwiftUI host, iOS ATT, foldable orientation and native SDK packaging
 ├── composeApp/                 Shared app UI, app-owned resources and composition
 ├── core/
 │   ├── common/                 Reusable shared app utilities and infrastructure
@@ -84,14 +84,14 @@ BlockBlast/
 | Module | Responsibility | Important dependencies |
 |---|---|---|
 | `:androidApp` | Android app entry point, packaging, Android SDK integration and Decompose Root retention across configuration changes | `:composeApp` |
-| `iosApp` | Native SwiftUI host, iOS ATT lifecycle and SDK packaging | Imports the `ComposeApp` framework |
+| `iosApp` | Native SwiftUI host, iOS ATT lifecycle, unlocked device-orientation policy for foldables (iPhone Duo presents landscape inner-display poses) and SDK packaging | Imports the `ComposeApp` framework |
 | `:composeApp` | Shared application UI, app-owned resources, the common MiniApp frame and app composition | core, catalog/root/settings/review, monetization, the production MiniApp bundle and `:miniapp:compose` contracts |
 | `:core:domain` | Reusable platform-neutral domain contracts and app-level models | no project dependency declared |
 | `:core:common` | Shared reusable utilities and common infrastructure | no project dependency declared |
 | `:core:data` | App settings, reusable audio playback and repository implementations | `:core:domain`, `:core:common` |
 | `:core:telemetry` | Shared analytics and crash-reporting facade | `:core:domain` |
 | `:core:pattern` | Exact, bounded and audio-independent temporal event patterns | no project dependency declared |
-| `:core:uikit` | Shared Compose theme, design-system components and the reusable Material 3 adaptive game scaffold | Compose convention, including Material 3 Adaptive |
+| `:core:uikit` | Shared Compose theme, design-system components and the reusable Material 3 adaptive game scaffold with a fold-aware rebalanced 50/50 two-pane policy | Compose convention, including Material 3 Adaptive |
 | `:feature:settings` | Settings components, stores and the confirmation/progress/result state holder for game-data reset | `:core:domain`, `:core:common`, `:miniapp:api` |
 | `:feature:catalog` | Registry-backed MiniApp catalog with adaptive host-owned Material 3 list cards and direct Play actions | `:miniapp:compose`, `:core:uikit`, Decompose, Compose resources and Haze |
 | `:feature:review` | Reusable app-review policy, prompt persistence, analytics and component | `:core:domain`, `:core:common`, multiplatform-settings |

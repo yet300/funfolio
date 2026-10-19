@@ -58,7 +58,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }()
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return .portrait
+        return .allButUpsideDown
     }
 
     func application(_ application: UIApplication, shouldSaveSecureApplicationState coder: NSCoder) -> Bool {
