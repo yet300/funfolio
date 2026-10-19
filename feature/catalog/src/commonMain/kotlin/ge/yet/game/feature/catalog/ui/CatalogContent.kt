@@ -29,7 +29,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.HazeInput
+import dev.chrisbanes.haze.blur.hazeBlur
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import ge.yet.game.feature.catalog.CatalogComponent
@@ -87,7 +88,7 @@ private fun CatalogScreen(
                     )
                 },
                 modifier = Modifier
-                    .hazeEffect(hazeState)
+                    .hazeBlur(input = HazeInput.Sources(hazeState))
                     .testTag("catalog_top_bar"),
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent,

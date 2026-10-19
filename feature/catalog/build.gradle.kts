@@ -23,6 +23,7 @@ kotlin {
             implementation(libs.decompose.compose)
             implementation(libs.compose.components.resources)
             implementation(libs.haze)
+            implementation(libs.haze.blur)
         }
         commonTest.dependencies {
             implementation(libs.bundles.testing)
